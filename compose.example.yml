@@ -1,0 +1,33 @@
+services:
+  opencode:
+    image: ghcr.io/tiamop23/opencode-dev-image:latest
+    extends:
+      file: ../common/baseservices.yaml
+      service: baseservice
+    volumes:
+      - ./data/workspace:/home/workspace
+      - ./data/config:/home/opencode/.config/opencode
+      - ./data/data:/home/opencode/.local/share/opencode
+      - ./data/state:/home/opencode/.local/state/opencode
+      - ./data/cache:/home/opencode/.cache/opencode
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.opencode.rule=Host(`opencode.tiamop23.de`)
+      - traefik.http.services.opencode.loadbalancer.server.port=4096
+      - io.containers.autoupdate=registry
+    working_dir: /home/workspace
+    environment:
+      - OPENCODE_SERVER_PASSWORD
+      - GITHUB_TOKEN
+    entrypoint:
+      - opencode
+      - web
+      - --hostname
+      - 0.0.0.0
+      - --cors
+      - https://tiamop23.de/
+
+networks:
+  default:
+    external: true
+    name: http_proxy
