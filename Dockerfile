@@ -143,6 +143,7 @@ RUN existing_group="$(getent group "${OPENCODE_GID}" | cut -d: -f1 || true)" \
     && install -d -o opencode -g opencode /home/opencode/.local/share/opencode \
     && install -d -o opencode -g opencode /home/opencode/.local/state/opencode \
     && install -d -o opencode -g opencode /home/opencode/.cache/opencode \
+    && chown -R opencode:opencode /home/opencode /home/workspace \
     && echo 'opencode ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/opencode \
     && chmod 0440 /etc/sudoers.d/opencode
 
