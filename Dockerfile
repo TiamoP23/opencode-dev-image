@@ -134,8 +134,11 @@ RUN install -d -m 0755 /etc/apt/keyrings \
     && npm install -g opencode-ai@latest \
     && rm -rf /var/lib/apt/lists/* /root/.npm
 
-RUN groupadd --gid "${OPENCODE_GID}" opencode \
-    && useradd --uid "${OPENCODE_UID}" --gid "${OPENCODE_GID}" --create-home --shell /bin/bash opencode \
+RUN existing_group="$(getent group "${OPENCODE_GID}" | cut -d: -f1 || true)" \
+    && if [ -n "${existing_group}" ] && [ "${existing_group}" != opencode ]; then groupmod --new-name opencode "${existing_group}"; elif [ -z "${existing_group}" ]; then groupadd --gid "${OPENCODE_GID}" opencode; fi \
+    && existing_user="$(getent passwd "${OPENCODE_UID}" | cut -d: -f1 || true)" \
+    && if [ -n "${existing_user}" ] && [ "${existing_user}" != opencode ]; then usermod --login opencode --home /home/opencode --move-home --shell /bin/bash "${existing_user}"; elif [ -z "${existing_user}" ]; then useradd --uid "${OPENCODE_UID}" --gid "${OPENCODE_GID}" --create-home --shell /bin/bash opencode; fi \
+    && usermod --gid "${OPENCODE_GID}" opencode \
     && install -d -o opencode -g opencode /home/workspace \
     && install -d -o opencode -g opencode /home/opencode/.config/opencode \
     && install -d -o opencode -g opencode /home/opencode/.local/share/opencode \
