@@ -11,7 +11,6 @@ ARG KOTLIN_VERSION=2.2.21
 
 ENV LANG=C.UTF-8 \
     LC_ALL=C.UTF-8 \
-    HOME=/home/opencode \
     PATH=/home/opencode/.cargo/bin:/home/opencode/.deno/bin:/home/opencode/.bun/bin:/home/opencode/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/sbin:/usr/bin:/sbin:/bin \
     PLAYWRIGHT_BROWSERS_PATH=/home/opencode/.cache/ms-playwright
 
@@ -146,6 +145,8 @@ RUN existing_group="$(getent group "${OPENCODE_GID}" | cut -d: -f1 || true)" \
     && install -d -o opencode -g opencode /home/opencode/.cache/opencode \
     && echo 'opencode ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/opencode \
     && chmod 0440 /etc/sudoers.d/opencode
+
+ENV HOME=/home/opencode
 
 USER opencode
 WORKDIR /home/opencode
