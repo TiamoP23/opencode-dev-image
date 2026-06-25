@@ -130,6 +130,7 @@ RUN install -d -m 0755 /etc/apt/keyrings \
     && apt-get install -y --no-install-recommends nodejs \
     && corepack enable \
     && npx -y playwright@latest install-deps \
+    && npx -y playwright@latest install chrome \
     && npm install -g opencode-ai@latest \
     && rm -rf /var/lib/apt/lists/* /root/.npm
 

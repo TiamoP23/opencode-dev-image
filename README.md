@@ -14,7 +14,7 @@ Ubuntu 24.04 based non-root development image for running opencode web with comm
 - Rust stable toolchain
 - Java JDK 21
 - Kotlin compiler
-- Playwright and Chrome DevTools MCP browser dependencies
+- Playwright and Chrome DevTools MCP browser dependencies, plus Google Chrome
 - Common shell, build, network, debugging, and container helper utilities
 
 ## Runtime Paths
@@ -36,7 +36,7 @@ podman build -t opencode-dev-image:test .
 ## Local Verification
 
 ```sh
-podman run --rm opencode-dev-image:test bash -lc 'whoami && id && opencode --version && node --version && npm --version && bun --version && deno --version && python3 --version && uv --version && rustc --version && cargo --version && java --version && kotlinc -version && just --version && git --version'
+podman run --rm opencode-dev-image:test bash -lc 'whoami && id && opencode --version && node --version && npm --version && bun --version && deno --version && python3 --version && uv --version && rustc --version && cargo --version && java --version && kotlinc -version && just --version && git --version && google-chrome --version'
 ```
 
 Expected: `whoami` prints `opencode` and all tools print versions.
