@@ -8,6 +8,7 @@ ARG OPENCODE_GID=1000
 ARG NODE_MAJOR=22
 ARG DENO_VERSION=2.6.1
 ARG KOTLIN_VERSION=2.2.21
+ARG PLAYWRIGHT_VERSION=1.61.1
 
 ENV LANG=C.UTF-8 \
     LC_ALL=C.UTF-8 \
@@ -129,8 +130,8 @@ RUN install -d -m 0755 /etc/apt/keyrings \
     && apt-get update \
     && apt-get install -y --no-install-recommends nodejs \
     && corepack enable \
-    && npx -y playwright@latest install-deps \
-    && npx -y playwright@latest install chrome \
+    && npx -y "playwright@${PLAYWRIGHT_VERSION}" install-deps \
+    && npx -y "playwright@${PLAYWRIGHT_VERSION}" install chrome \
     && npm install -g opencode-ai@latest \
     && rm -rf /var/lib/apt/lists/* /root/.npm
 
