@@ -157,6 +157,7 @@ WORKDIR /home/opencode
 RUN curl -fsSL https://bun.sh/install | bash \
     && curl -fsSL https://deno.land/install.sh | sh -s -- "v${DENO_VERSION}" \
     && curl -fsSL https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain stable \
+    && rustup component add rustfmt clippy \
     && python3 -m pipx ensurepath \
     && pipx install uv \
     && curl -fsSLo /tmp/kotlin.zip "https://github.com/JetBrains/kotlin/releases/download/v${KOTLIN_VERSION}/kotlin-compiler-${KOTLIN_VERSION}.zip" \
