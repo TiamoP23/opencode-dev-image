@@ -5,6 +5,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ARG DEBIAN_FRONTEND=noninteractive
 ARG OPENCODE_UID=1000
 ARG OPENCODE_GID=1000
+ARG OPENCODE_VERSION=2.2.1
 ARG NODE_MAJOR=22
 ARG DENO_VERSION=2.6.1
 ARG KOTLIN_VERSION=2.2.21
@@ -132,7 +133,7 @@ RUN install -d -m 0755 /etc/apt/keyrings \
     && corepack enable \
     && npx -y "playwright@${PLAYWRIGHT_VERSION}" install-deps \
     && npx -y "playwright@${PLAYWRIGHT_VERSION}" install chrome \
-    && npm install -g opencode-ai@latest \
+    && npm install -g "@opencode/cli@${OPENCODE_VERSION}" \
     && rm -rf /var/lib/apt/lists/* /root/.npm
 
 RUN existing_group="$(getent group "${OPENCODE_GID}" | cut -d: -f1 || true)" \

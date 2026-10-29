@@ -17,13 +17,15 @@ services:
       - io.containers.autoupdate=registry
     working_dir: /home/workspace
     environment:
-      - OPENCODE_SERVER_PASSWORD
+      - OPENCODE_PASSWORD=${OPENCODE_PASSWORD:?OPENCODE_PASSWORD is required}
       - GITHUB_TOKEN
     entrypoint:
       - opencode
-      - web
+      - serve
       - --hostname
       - 0.0.0.0
+      - --port
+      - '4096'
       - --cors
       - https://tiamop23.de/
 

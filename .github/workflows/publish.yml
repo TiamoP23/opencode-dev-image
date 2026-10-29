@@ -19,6 +19,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
+      - name: Test image configuration
+        run: node --test tests/image.test.mjs
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -39,11 +42,33 @@ jobs:
             type=sha,prefix=sha-,format=short
             type=semver,pattern={{version}}
 
-      - name: Build and publish
+      - name: Build and load for smoke test
+        id: build
         uses: docker/build-push-action@v6
         with:
           context: .
           platforms: linux/amd64
-          push: true
+          load: true
+          push: false
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Smoke test image
+        env:
+          IMAGE_ID: ${{ steps.build.outputs.imageid }}
+        run: |
+          docker run --rm "$IMAGE_ID" bash -ec '
+            test "$(id -u)" = "1000"
+            test "$(opencode --version)" = "2.2.1"
+            opencode serve --help
+          '
+
+      - name: Publish tested image
+        env:
+          IMAGE_TAGS: ${{ steps.meta.outputs.tags }}
+        run: |
+          while IFS= read -r tag; do
+            docker push "$tag"
+          done <<< "$IMAGE_TAGS"
