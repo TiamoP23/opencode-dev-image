@@ -61,7 +61,7 @@ jobs:
         run: |
           docker run --rm "$IMAGE_ID" bash -ec '
             test "$(id -u)" = "1000"
-            test "$(opencode --version)" = "2.2.1"
+            test "$(opencode --version)" = "opencode v2.2.1"
             opencode serve --help
           '
 

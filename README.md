@@ -39,7 +39,7 @@ podman build -t opencode-dev-image:test .
 podman run --rm opencode-dev-image:test bash -lc 'whoami && id && opencode --version && node --version && npm --version && bun --version && deno --version && python3 --version && uv --version && rustc --version && cargo --version && java --version && kotlinc -version && just --version && git --version && google-chrome --version'
 ```
 
-Expected: `whoami` prints `opencode`, `id` shows UID/GID `1000:1000`, `opencode --version` prints exactly `2.2.1`, and all other tools print versions. Also check `opencode serve --help`.
+Expected: `whoami` prints `opencode`, `id` shows UID/GID `1000:1000`, `opencode --version` prints exactly `opencode v2.2.1`, and all other tools print versions. Also check `opencode serve --help`.
 
 Run the image configuration regression tests without building the image:
 

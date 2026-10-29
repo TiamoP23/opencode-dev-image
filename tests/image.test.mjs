@@ -17,6 +17,10 @@ test('compose runs the foreground V2 server on the proxy port', () => {
   assert.match(compose, /^\s+- OPENCODE_PASSWORD=\$\{OPENCODE_PASSWORD:\?OPENCODE_PASSWORD is required\}$/m);
 });
 
+test('CI checks the full OpenCode version output', () => {
+  assert.ok(workflow.includes('test "$(opencode --version)" = "opencode v2.2.1"'));
+});
+
 test('CI publishes the exact loaded image only after smoke testing', () => {
   assert.equal(workflow.match(/uses: docker\/build-push-action@/g)?.length, 1);
   assert.match(workflow, /load: true/);
